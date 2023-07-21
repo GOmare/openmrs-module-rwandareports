@@ -1,6 +1,6 @@
 -- $BEGIN
 
-CREATE TABLE IF NOT EXISTS mamba_dim_insurance_policy
+CREATE TABLE mamba_dim_insurance_policy
 (
     id                  INT          NOT NULL AUTO_INCREMENT,
     insurance_policy_id INT          NOT NULL,

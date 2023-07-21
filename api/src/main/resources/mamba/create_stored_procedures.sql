@@ -1673,20 +1673,20 @@ BEGIN
 
 CREATE TABLE mamba_dim_person
 (
-    id                  INT      NOT NULL AUTO_INCREMENT,
-    person_id           INT      NOT NULL,
-    birthdate           DATE NULL,
-    birthdate_estimated TINYINT  NOT NULL,
-    age                 INT NULL,
-    dead                TINYINT  NOT NULL,
-    death_date          DATETIME NULL,
-    deathdate_estimated TINYINT  NOT NULL,
+    id                  INT          NOT NULL AUTO_INCREMENT,
+    person_id           INT          NOT NULL,
+    birthdate           DATE         NULL,
+    birthdate_estimated TINYINT      NOT NULL,
+    age                 INT          NULL,
+    dead                TINYINT      NOT NULL,
+    death_date          DATETIME     NULL,
+    deathdate_estimated TINYINT      NOT NULL,
     gender              VARCHAR(255) NULL,
-    date_created        DATETIME NOT NULL,
+    date_created        DATETIME     NOT NULL,
     person_name_short   VARCHAR(255) NULL,
-    person_name_long    TEXT NULL,
-    uuid                CHAR(38) NOT NULL,
-    voided              TINYINT  NOT NULL,
+    person_name_long    TEXT         NULL,
+    uuid                CHAR(38)     NOT NULL,
+    voided              TINYINT      NOT NULL,
 
     PRIMARY KEY (id)
 ) CHARSET = UTF8MB4;
@@ -1716,39 +1716,39 @@ BEGIN
 -- $BEGIN
 
 INSERT INTO mamba_dim_person
-    (
-        person_id,
-        birthdate,
-        birthdate_estimated,
-        age,
-        dead,
-        death_date,
-        deathdate_estimated,
-        gender,
-        date_created,
-        person_name_short,
-        person_name_long,
-        uuid,
-        voided
-    )
+(person_id,
+ birthdate,
+ birthdate_estimated,
+ age,
+ dead,
+ death_date,
+ deathdate_estimated,
+ gender,
+ date_created,
+ person_name_short,
+ person_name_long,
+ uuid,
+ voided)
 
-    SELECT psn.person_id,
-           psn.birthdate,
-           psn.birthdate_estimated,
-           fn_mamba_age_calculator(birthdate,death_date) AS age,
-           psn.dead,
-           psn.death_date,
-           psn.deathdate_estimated,
-           psn.gender,
-           psn.date_created,
-           CONCAT_WS(' ',prefix,given_name,middle_name,family_name) AS person_name_short,
-           CONCAT_WS(' ', prefix,given_name, middle_name,family_name_prefix, family_name,family_name2,family_name_suffix, degree)
-            AS person_name_long,
-            psn.uuid,
-            psn.voided
-    FROM person psn
-     INNER JOIN  person_name pn
-         on psn.person_id = pn.person_id;
+SELECT psn.person_id,
+       psn.birthdate,
+       psn.birthdate_estimated,
+       fn_mamba_age_calculator(birthdate, death_date)               AS age,
+       psn.dead,
+       psn.death_date,
+       psn.deathdate_estimated,
+       psn.gender,
+       psn.date_created,
+       CONCAT_WS(' ', prefix, given_name, middle_name, family_name) AS person_name_short,
+       CONCAT_WS(' ', prefix, given_name, middle_name, family_name_prefix, family_name, family_name2,
+                 family_name_suffix, degree)
+                                                                    AS person_name_long,
+       psn.uuid,
+       psn.voided
+FROM person psn
+         INNER JOIN person_name pn
+                    on psn.person_id = pn.person_id
+where pn.preferred=1;
 
 -- $END
 END //
@@ -2621,29 +2621,30 @@ CREATE PROCEDURE sp_mamba_data_processing_derived_billing()
 BEGIN
 -- $BEGIN
 
-    -- Dimensions
-    CALL sp_mamba_dim_admission;
-    CALL sp_mamba_dim_beneficiary;
-    CALL sp_mamba_dim_bill_payment;
-    CALL sp_mamba_dim_billable_service;
-    CALL sp_mamba_dim_consommation;
-    CALL sp_mamba_dim_department;
-    CALL sp_mamba_dim_facility_service_price;
-    CALL sp_mamba_dim_global_bill;
-    CALL sp_mamba_dim_hop_service;
-    CALL sp_mamba_dim_insurance_rate;
-    CALL sp_mamba_dim_insurance;
-    CALL sp_mamba_dim_insurance_bill;
-    CALL sp_mamba_dim_insurance_policy;
-    CALL sp_mamba_dim_paid_service_bill;
-    CALL sp_mamba_dim_patient_bill;
-    CALL sp_mamba_dim_patient_service_bill;
-    CALL sp_mamba_dim_service_category;
-    CALL sp_mamba_dim_third_party_bill;
-    CALL sp_mamba_dim_thirdparty;
+-- Dimensions
+CALL sp_mamba_dim_admission;
+CALL sp_mamba_dim_beneficiary;
+CALL sp_mamba_dim_bill_payment;
+CALL sp_mamba_dim_billable_service;
+CALL sp_mamba_dim_consommation;
+CALL sp_mamba_dim_department;
+CALL sp_mamba_dim_facility_service_price;
+CALL sp_mamba_dim_global_bill;
+CALL sp_mamba_dim_hop_service;
+CALL sp_mamba_dim_insurance_rate;
+CALL sp_mamba_dim_insurance;
+CALL sp_mamba_dim_insurance_bill;
+CALL sp_mamba_dim_insurance_policy;
+CALL sp_mamba_dim_paid_service_bill;
+CALL sp_mamba_dim_patient_bill;
+CALL sp_mamba_dim_patient_service_bill;
+CALL sp_mamba_dim_service_category;
+CALL sp_mamba_dim_third_party_bill;
+CALL sp_mamba_dim_thirdparty;
 
-    -- Facts
-    CALL sp_mamba_fact_patient_service_bill;
+-- Facts
+CALL sp_mamba_fact_patient_service_bill;
+
 -- $END
 END //
 
@@ -2667,7 +2668,7 @@ BEGIN
 CALL sp_mamba_data_processing_flatten();
 
 -- Call the ETL process
- CALL sp_mamba_data_processing_derived_billing();
+CALL sp_mamba_data_processing_derived_billing();
 -- $END
 END //
 
@@ -2685,7 +2686,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_thirdparty_create;
 CREATE PROCEDURE sp_mamba_dim_thirdparty_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_third_party
+
+CREATE TABLE mamba_dim_third_party
 (
     id             INT          NOT NULL AUTO_INCREMENT,
     third_party_id INT          NOT NULL,
@@ -2782,6 +2784,7 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_department_create;
 CREATE PROCEDURE sp_mamba_dim_department_create()
 BEGIN
 -- $BEGIN
+
 CREATE TABLE IF NOT EXISTS mamba_dim_department
 (
     id            INT         NOT NULL AUTO_INCREMENT,
@@ -2879,7 +2882,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_hop_service_create;
 CREATE PROCEDURE sp_mamba_dim_hop_service_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_hop_service
+
+CREATE TABLE mamba_dim_hop_service
 (
     id           INT         NOT NULL AUTO_INCREMENT,
     service_id   INT         NOT NULL,
@@ -2976,31 +2980,32 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_insurance_create;
 CREATE PROCEDURE sp_mamba_dim_insurance_create()
 BEGIN
 -- $BEGIN
-    CREATE TABLE  mamba_dim_insurance
-    (
-        id                              INT          NOT NULL AUTO_INCREMENT,
-        insurance_id                    INT          NOT NULL,
-        current_insurance_rate          FLOAT        NULL,
-        current_insurance_rate_flat_fee FLOAT        NULL,
-        concept_id                      int          null,
-        category                        varchar(150) not null,
-        name                            varchar(50)  not null,
-        address                         varchar(150) null,
-        phone                           varchar(100) null,
-        created_date                    date         not null,
 
-        PRIMARY KEY (id)
-    )
-        CHARSET = UTF8MB4;
+CREATE TABLE mamba_dim_insurance
+(
+    id                              INT          NOT NULL AUTO_INCREMENT,
+    insurance_id                    INT          NOT NULL,
+    current_insurance_rate          FLOAT        NULL,
+    current_insurance_rate_flat_fee FLOAT        NULL,
+    concept_id                      int          null,
+    category                        varchar(150) not null,
+    name                            varchar(50)  not null,
+    address                         varchar(150) null,
+    phone                           varchar(100) null,
+    created_date                    date         not null,
 
-    CREATE INDEX mamba_dim_insurance_insurance_id_index
-        ON mamba_dim_insurance (insurance_id);
+    PRIMARY KEY (id)
+)
+    CHARSET = UTF8MB4;
 
-    CREATE INDEX mamba_dim_insurance_concept_id_index
-        ON mamba_dim_insurance (concept_id);
+CREATE INDEX mamba_dim_insurance_insurance_id_index
+    ON mamba_dim_insurance (insurance_id);
 
-    CREATE INDEX mamba_dim_insurance_category_index
-        ON mamba_dim_insurance (category);
+CREATE INDEX mamba_dim_insurance_concept_id_index
+    ON mamba_dim_insurance (concept_id);
+
+CREATE INDEX mamba_dim_insurance_category_index
+    ON mamba_dim_insurance (category);
 
 -- $END
 END //
@@ -3053,6 +3058,7 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_insurance_update;
 CREATE PROCEDURE sp_mamba_dim_insurance_update()
 BEGIN
 -- $BEGIN
+
 -- Update the current insurance rate for this insurance
 UPDATE mamba_dim_insurance ins
 SET ins.current_insurance_rate = COALESCE(
@@ -3061,7 +3067,7 @@ SET ins.current_insurance_rate = COALESCE(
          WHERE ir.insurance_id = ins.insurance_id
            AND (ir.retire_date IS NULL OR ir.retire_date > NOW())
          ORDER BY ir.retire_date ASC
-        LIMIT 1),
+         LIMIT 1),
         0 -- Default value when no active rate is found (you can change this to any default value)
     );
 
@@ -3073,9 +3079,10 @@ SET ins.current_insurance_rate_flat_fee = COALESCE(
          WHERE ir.insurance_id = ins.insurance_id
            AND (ir.retire_date IS NULL OR ir.retire_date > NOW())
          ORDER BY ir.retire_date ASC
-        LIMIT 1),
+         LIMIT 1),
         0
     );
+
 -- $END
 END //
 
@@ -3113,7 +3120,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_insurance_rate_create;
 CREATE PROCEDURE sp_mamba_dim_insurance_rate_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_insurance_rate
+
+CREATE TABLE mamba_dim_insurance_rate
 (
     id                INT            NOT NULL AUTO_INCREMENT,
     insurance_rate_id INT            NOT NULL,
@@ -3127,7 +3135,7 @@ CREATE TABLE IF NOT EXISTS mamba_dim_insurance_rate
     retire_date       date           null,
 
     PRIMARY KEY (id)
-    )
+)
     CHARSET = UTF8MB4;
 
 CREATE INDEX mamba_dim_insurance_rate_insurance_rate_id_index
@@ -3231,7 +3239,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_service_category_create;
 CREATE PROCEDURE sp_mamba_dim_service_category_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_service_category
+
+CREATE TABLE mamba_dim_service_category
 (
     id                  INT          NOT NULL AUTO_INCREMENT,
     service_category_id INT          NOT NULL,
@@ -3350,7 +3359,7 @@ CREATE PROCEDURE sp_mamba_dim_insurance_policy_create()
 BEGIN
 -- $BEGIN
 
-CREATE TABLE IF NOT EXISTS mamba_dim_insurance_policy
+CREATE TABLE mamba_dim_insurance_policy
 (
     id                  INT          NOT NULL AUTO_INCREMENT,
     insurance_policy_id INT          NOT NULL,
@@ -3605,6 +3614,7 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_admission_create;
 CREATE PROCEDURE sp_mamba_dim_admission_create()
 BEGIN
 -- $BEGIN
+
 CREATE TABLE IF NOT EXISTS mamba_dim_admission
 (
     id                  INT          NOT NULL AUTO_INCREMENT,
@@ -3720,7 +3730,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_facility_service_price_create;
 CREATE PROCEDURE sp_mamba_dim_facility_service_price_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_facility_service_price
+
+CREATE TABLE mamba_dim_facility_service_price
 (
     id                        INT            NOT NULL AUTO_INCREMENT,
     facility_service_price_id INT            NOT NULL,
@@ -3850,6 +3861,7 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_billable_service_create;
 CREATE PROCEDURE sp_mamba_dim_billable_service_create()
 BEGIN
 -- $BEGIN
+
 CREATE TABLE IF NOT EXISTS mamba_dim_billable_service
 (
     id                        INT            NOT NULL AUTO_INCREMENT,
@@ -3968,7 +3980,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_insurance_bill_create;
 CREATE PROCEDURE sp_mamba_dim_insurance_bill_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_insurance_bill
+
+CREATE TABLE mamba_dim_insurance_bill
 (
     id                INT      NOT NULL AUTO_INCREMENT,
     insurance_bill_id INT      NOT NULL,
@@ -4062,7 +4075,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_third_party_bill_create;
 CREATE PROCEDURE sp_mamba_dim_third_party_bill_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_third_party_bill
+
+CREATE TABLE mamba_dim_third_party_bill
 (
     id                  INT      NOT NULL AUTO_INCREMENT,
     third_party_bill_id INT      NOT NULL,
@@ -4156,7 +4170,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_global_bill_create;
 CREATE PROCEDURE sp_mamba_dim_global_bill_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_global_bill
+
+CREATE TABLE mamba_dim_global_bill
 (
     id              INT          NOT NULL AUTO_INCREMENT,
     global_bill_id  INT          NOT NULL,
@@ -4165,7 +4180,7 @@ CREATE TABLE IF NOT EXISTS mamba_dim_global_bill
     bill_identifier varchar(250) not null,
     global_amount   decimal      not null,
     closing_date    datetime     null,
-    closed          TINYINT(1)     not null,
+    closed          TINYINT(1)   not null,
     closed_by_id    int          null,
     closed_by_name  varchar(255) null,
     closed_reason   varchar(150) null,
@@ -4174,7 +4189,7 @@ CREATE TABLE IF NOT EXISTS mamba_dim_global_bill
     created_date    datetime     not null,
 
     PRIMARY KEY (id)
-    )
+)
     CHARSET = UTF8MB4;
 
 CREATE INDEX mamba_dim_global_bill_global_bill_id_index
@@ -4254,12 +4269,13 @@ CREATE PROCEDURE sp_mamba_dim_global_bill_update()
 BEGIN
 -- $BEGIN
 
-    -- update the user who closed this bill - in this case it is a doctor
-    UPDATE mamba_dim_global_bill gb
-        INNER JOIN mamba_dim_users u ON u.user_id = gb.closed_by_id
-        INNER JOIN mamba_dim_person_name psn ON psn.person_id = u.person_id
-        SET gb.closed_by_name = CONCAT(psn.family_name, ' ', psn.given_name)
-    WHERE gb.closed = 1;
+-- update the user who closed this bill - in this case it is a doctor
+UPDATE mamba_dim_global_bill gb
+    INNER JOIN mamba_dim_users u ON u.user_id = gb.closed_by_id
+    INNER JOIN mamba_dim_person_name psn ON psn.person_id = u.person_id
+SET gb.closed_by_name = CONCAT(psn.family_name, ' ', psn.given_name)
+WHERE gb.closed = 1;
+
 -- $END
 END //
 
@@ -4297,7 +4313,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_patient_bill_create;
 CREATE PROCEDURE sp_mamba_dim_patient_bill_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_patient_bill
+
+CREATE TABLE mamba_dim_patient_bill
 (
     id              INT            NOT NULL AUTO_INCREMENT,
     patient_bill_id INT            NOT NULL,
@@ -4395,6 +4412,7 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_consommation_create;
 CREATE PROCEDURE sp_mamba_dim_consommation_create()
 BEGIN
 -- $BEGIN
+
 CREATE TABLE IF NOT EXISTS mamba_dim_consommation
 (
     id                  INT      NOT NULL AUTO_INCREMENT,
@@ -4522,7 +4540,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_patient_service_bill_create;
 CREATE PROCEDURE sp_mamba_dim_patient_service_bill_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_patient_service_bill
+
+CREATE TABLE mamba_dim_patient_service_bill
 (
     id                        INT            NOT NULL AUTO_INCREMENT,
     patient_service_bill_id   INT            NOT NULL,
@@ -4665,6 +4684,7 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_bill_payment_create;
 CREATE PROCEDURE sp_mamba_dim_bill_payment_create()
 BEGIN
 -- $BEGIN
+
 CREATE TABLE IF NOT EXISTS mamba_dim_bill_payment
 (
     id              INT            NOT NULL AUTO_INCREMENT,
@@ -4704,11 +4724,11 @@ BEGIN
 -- $BEGIN
 
 INSERT INTO mamba_dim_bill_payment (bill_payment_id,
-                                  patient_bill_id,
-                                  amount_paid,
-                                  date_received,
-                                  collector,
-                                  created_date)
+                                    patient_bill_id,
+                                    amount_paid,
+                                    date_received,
+                                    collector,
+                                    created_date)
 SELECT bill_payment_id,
        patient_bill_id,
        amount_paid,
@@ -4771,7 +4791,8 @@ DROP PROCEDURE IF EXISTS sp_mamba_dim_paid_service_bill_create;
 CREATE PROCEDURE sp_mamba_dim_paid_service_bill_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_paid_service_bill
+
+CREATE TABLE mamba_dim_paid_service_bill
 (
     id                      INT      NOT NULL AUTO_INCREMENT,
     paid_service_bill_id    INT      NOT NULL,
@@ -4883,44 +4904,48 @@ DROP PROCEDURE IF EXISTS sp_mamba_fact_patient_service_bill_create;
 CREATE PROCEDURE sp_mamba_fact_patient_service_bill_create()
 BEGIN
 -- $BEGIN
-CREATE TABLE mamba_fact_insurance
+
+CREATE TABLE mamba_fact_patient_service_bill
 (
-    id                              INT            NOT NULL AUTO_INCREMENT,
-    admission_date                  DATE           NULL,
-    closing_date                    DATE           NULL,
-    beneficiary_name                TEXT           NULL,
-    household_head_name             VARCHAR(255)   NULL,
-    family_code                     VARCHAR(255)   NULL,
-    beneficiary_level               INT            NULL,
-    card_number                     VARCHAR(255)   NULL,
-    company_name                    VARCHAR(255)   NULL,
-    age                             INT            NULL,
-    birth_date                      DATE           NULL,
-    gender                          CHAR(1)        NULL,
-    doctor_name                     VARCHAR(255)   NULL,
-    insurance_name                  VARCHAR(255)   NULL,
-    insurance_id                    INT            NOT NULL,
-    current_insurance_rate          FLOAT          NOT NULL,
-    current_insurance_rate_flat_fee DECIMAL(20, 2) NULL,
-    hop_service_id                  INT            NULL,
-    service_bill_quantity           DECIMAL(20, 2) NULL,
-    service_bill_unit_price         DECIMAL(20, 2) NOT NULL,
+    id                      INT            NOT NULL AUTO_INCREMENT,
+    admission_date          DATE           NOT NULL,
+    closing_date            DATE           NULL,
+    beneficiary_name        TEXT           NULL,
+    household_head_name     VARCHAR(255)   NULL,
+    family_code             VARCHAR(255)   NULL,
+    beneficiary_level       INT            NULL,
+    card_number             VARCHAR(255)   NULL,
+    company_name            VARCHAR(255)   NULL,
+    age                     INT            NULL,
+    birth_date              DATE           NULL,
+    gender                  CHAR(1)        NULL,
+    doctor_name             VARCHAR(255)   NULL,
+    service_bill_quantity   DECIMAL(20, 2) NULL,
+    service_bill_unit_price DECIMAL(20, 2) NOT NULL,
+
+    insurance_id            INT            NOT NULL,
+    hop_service_id          INT            NULL,
+    global_bill_id          INT            NOT NULL,
+    hop_service_name        VARCHAR(50)    NULL,
 
     PRIMARY KEY (id)
 )
     CHARSET = UTF8MB4;
 
-CREATE INDEX mamba_fact_insurance_insurance_id_index
-    ON mamba_fact_insurance (insurance_id);
+CREATE INDEX mamba_fact_patient_service_bill_insurance_id_index
+    ON mamba_fact_patient_service_bill (insurance_id);
 
-CREATE INDEX mamba_fact_insurance_hop_service_id_index
-    ON mamba_fact_insurance (hop_service_id);
+CREATE INDEX mamba_fact_patient_service_bill_global_bill_id_index
+    ON mamba_fact_patient_service_bill (global_bill_id);
 
-CREATE INDEX mamba_fact_insurance_closing_date_index
-    ON mamba_fact_insurance (closing_date);
+CREATE INDEX mamba_fact_patient_service_bill_hop_service_id_index
+    ON mamba_fact_patient_service_bill (hop_service_id);
 
-CREATE INDEX mamba_fact_insurance_admission_date_index
-    ON mamba_fact_insurance (admission_date);
+CREATE INDEX mamba_fact_patient_service_bill_closing_date_index
+    ON mamba_fact_patient_service_bill (closing_date);
+
+CREATE INDEX mamba_fact_patient_service_bill_admission_date_index
+    ON mamba_fact_patient_service_bill (admission_date);
 
 -- $END
 END //
@@ -4940,31 +4965,30 @@ CREATE PROCEDURE sp_mamba_fact_patient_service_bill_insert()
 BEGIN
 -- $BEGIN
 
-INSERT INTO mamba_fact_insurance(admission_date, closing_date, beneficiary_name, household_head_name, family_code,
-                                 beneficiary_level, card_number, company_name, age, birth_date, gender, doctor_name,
-                                 insurance_name, insurance_id, current_insurance_rate, current_insurance_rate_flat_fee,
-                                 hop_service_id, service_bill_quantity, service_bill_unit_price)
+INSERT INTO mamba_fact_patient_service_bill(admission_date, closing_date, beneficiary_name, household_head_name,
+                                            family_code, beneficiary_level, card_number, company_name, age, birth_date,
+                                            gender, doctor_name, service_bill_quantity, service_bill_unit_price,
+                                            insurance_id, hop_service_id, global_bill_id, hop_service_name)
 
 SELECT -- DATE_FORMAT(gb.created_date, '%d/%m/%Y') AS admission_date,
-       DATE(gb.created_date)               AS admission_date,
-       DATE(gb.closing_date)               AS closing_date,
-       bps.person_name_long                AS beneficiary_name,
-       ben.owner_name                      AS household_head_name,
-       ben.owner_code                      AS family_code,
-       ben.level                           AS beneficiary_level,
-       isp.insurance_card_no               AS card_number,
-       ben.company                         AS company_name,
-       bps.age                             AS age,
-       DATE(bps.birthdate)                 AS birth_date,
-       bps.gender                          AS gender,
-       gb.closed_by_name                   AS doctor_name,
-       ins.name                            AS insurance_name,
-       ins.insurance_id                    AS insurance_id,
-       ins.current_insurance_rate          AS current_insurance_rate,
-       ins.current_insurance_rate_flat_fee AS current_insurance_rate_flat_fee,
-       psb.service_id                      AS hop_service_id,
-       psb.quantity                        AS service_bill_quantity,
-       psb.unit_price                      AS service_bill_unit_price
+       DATE(gb.created_date) AS admission_date,
+       DATE(gb.closing_date) AS closing_date,
+       bps.person_name_long  AS beneficiary_name,
+       ben.owner_name        AS household_head_name,
+       ben.owner_code        AS family_code,
+       ben.level             AS beneficiary_level,
+       isp.insurance_card_no AS card_number,
+       ben.company           AS company_name,
+       bps.age               AS age,
+       DATE(bps.birthdate)   AS birth_date,
+       bps.gender            AS gender,
+       gb.closed_by_name     AS doctor_name,
+       psb.quantity          AS service_bill_quantity,
+       psb.unit_price        AS service_bill_unit_price,
+       ins.insurance_id      AS insurance_id,
+       psb.service_id        AS hop_service_id,
+       gb.global_bill_id     AS global_bill_id,
+       hp.name               AS hop_service_name
 
 FROM mamba_dim_patient_service_bill psb
          INNER JOIN mamba_dim_consommation cons ON psb.consommation_id = cons.consommation_id
@@ -4973,6 +4997,7 @@ FROM mamba_dim_patient_service_bill psb
          INNER JOIN mamba_dim_insurance_policy isp on ben.insurance_policy_id = isp.insurance_policy_id
          INNER JOIN mamba_dim_insurance ins ON ins.insurance_id = isp.insurance_id
          INNER JOIN mamba_dim_person bps ON bps.person_id = ben.patient_id
+         INNER JOIN mamba_dim_hop_service hp on hp.service_id = psb.service_id
 
 WHERE gb.closed = 1
   AND psb.voided = 0
@@ -5009,95 +5034,19 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS sp_mamba_fact_insurance_query;
-CREATE PROCEDURE sp_mamba_fact_insurance_query(
-    IN START_DATE DATETIME,
-    IN END_DATE DATETIME,
-    IN INSURANCE_ID INT)
+DROP PROCEDURE IF EXISTS sp_mamba_fact_patient_service_bill_query;
+
+CREATE PROCEDURE sp_mamba_fact_patient_service_bill_query(
+    IN insurance_id INT,
+    IN start_date DATE,
+    IN end_date DATE)
 
 BEGIN
-    SELECT patient_service_bill_id,
-           consommation_id,
-           billable_service_id,
-           service_id,
-           service_date,
-           unit_price,
-           quantity,
-           paid_quantity,
-           service_other,
-           service_other_description,
-           is_paid,
-           drug_frequency,
-           item_type,
-           voided,
-           global_bill_id,
-           department_id,
-           beneficiary_id,
-           patient_bill_id,
-           insurance_bill_id,
-           third_party_bill_id,
-           admission_id,
-           insurance_id,
-           bill_identifier,
-           global_amount,
-           closing_date,
-           closed,
-           closed_by,
-           closed_reason,
-           edited_by,
-           edit_reason,
-           global_bill_creation_date,
-           department_name,
-           facility_service_price_id,
-           service_category_id,
-           maxima_to_pay,
-           start_date,
-           end_date,
-           beneficary_patient_id,
-           insurance_policy_id,
-           policy_id_number,
-           creator,
-           owner_name,
-           owner_code,
-           level,
-           company,
-           patient_bill_amount,
-           is_patient_bill_paid,
-           status,
-           insurance_bill_amount,
-           third_party_bill_amount,
-           third_party_id,
-           insurance_card_no,
-           insurance_policy_owner,
-           coverage_start_date,
-           expiration_date,
-           insurance_company_concept,
-           insurance_category,
-           insurance_company_name,
-           insurance_company_address,
-           insurance_company_phone,
-           owner_patient_id,
-           third_party_name,
-           third_party_rate,
-           service_category_name,
-           service_category_price,
-           facility_location_id,
-           facility_concept_id,
-           facility_name,
-           facility_full_price,
-           beneficiary_patient_id,
-           beneficiary_family_name,
-           beneficiary_middle_name,
-           beneficiary_given_name,
-           beneficiary_birth_date,
-           beneficiary_birth_date_estimated,
-           beneficiary_gender,
-           TIMESTAMPDIFF(YEAR, beneficiary_birth_date, CURRENT_DATE) AS age
 
-    FROM mamba_fact_insurance i
-
-    WHERE i.insurance_id = INSURANCE_ID
-      AND i.global_bill_creation_date BETWEEN START_DATE AND END_DATE;
+    SELECT *
+    FROM mamba_fact_patient_service_bill bill
+    WHERE bill.insurance_id = insurance_id
+      AND bill.admission_date BETWEEN start_date AND end_date;
 
 END //
 
@@ -5137,29 +5086,30 @@ CREATE PROCEDURE sp_mamba_data_processing_derived_billing()
 BEGIN
 -- $BEGIN
 
-    -- Dimensions
-    CALL sp_mamba_dim_admission;
-    CALL sp_mamba_dim_beneficiary;
-    CALL sp_mamba_dim_bill_payment;
-    CALL sp_mamba_dim_billable_service;
-    CALL sp_mamba_dim_consommation;
-    CALL sp_mamba_dim_department;
-    CALL sp_mamba_dim_facility_service_price;
-    CALL sp_mamba_dim_global_bill;
-    CALL sp_mamba_dim_hop_service;
-    CALL sp_mamba_dim_insurance_rate;
-    CALL sp_mamba_dim_insurance;
-    CALL sp_mamba_dim_insurance_bill;
-    CALL sp_mamba_dim_insurance_policy;
-    CALL sp_mamba_dim_paid_service_bill;
-    CALL sp_mamba_dim_patient_bill;
-    CALL sp_mamba_dim_patient_service_bill;
-    CALL sp_mamba_dim_service_category;
-    CALL sp_mamba_dim_third_party_bill;
-    CALL sp_mamba_dim_thirdparty;
+-- Dimensions
+CALL sp_mamba_dim_admission;
+CALL sp_mamba_dim_beneficiary;
+CALL sp_mamba_dim_bill_payment;
+CALL sp_mamba_dim_billable_service;
+CALL sp_mamba_dim_consommation;
+CALL sp_mamba_dim_department;
+CALL sp_mamba_dim_facility_service_price;
+CALL sp_mamba_dim_global_bill;
+CALL sp_mamba_dim_hop_service;
+CALL sp_mamba_dim_insurance_rate;
+CALL sp_mamba_dim_insurance;
+CALL sp_mamba_dim_insurance_bill;
+CALL sp_mamba_dim_insurance_policy;
+CALL sp_mamba_dim_paid_service_bill;
+CALL sp_mamba_dim_patient_bill;
+CALL sp_mamba_dim_patient_service_bill;
+CALL sp_mamba_dim_service_category;
+CALL sp_mamba_dim_third_party_bill;
+CALL sp_mamba_dim_thirdparty;
 
-    -- Facts
-    CALL sp_mamba_fact_patient_service_bill;
+-- Facts
+CALL sp_mamba_fact_patient_service_bill;
+
 -- $END
 END //
 

@@ -1,5 +1,6 @@
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_hop_service
+
+CREATE TABLE mamba_dim_hop_service
 (
     id           INT         NOT NULL AUTO_INCREMENT,
     service_id   INT         NOT NULL,

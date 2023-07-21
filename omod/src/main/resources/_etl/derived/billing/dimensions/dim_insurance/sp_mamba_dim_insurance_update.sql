@@ -1,4 +1,5 @@
 -- $BEGIN
+
 -- Update the current insurance rate for this insurance
 UPDATE mamba_dim_insurance ins
 SET ins.current_insurance_rate = COALESCE(
@@ -7,7 +8,7 @@ SET ins.current_insurance_rate = COALESCE(
          WHERE ir.insurance_id = ins.insurance_id
            AND (ir.retire_date IS NULL OR ir.retire_date > NOW())
          ORDER BY ir.retire_date ASC
-        LIMIT 1),
+         LIMIT 1),
         0 -- Default value when no active rate is found (you can change this to any default value)
     );
 
@@ -19,7 +20,8 @@ SET ins.current_insurance_rate_flat_fee = COALESCE(
          WHERE ir.insurance_id = ins.insurance_id
            AND (ir.retire_date IS NULL OR ir.retire_date > NOW())
          ORDER BY ir.retire_date ASC
-        LIMIT 1),
+         LIMIT 1),
         0
     );
+
 -- $END

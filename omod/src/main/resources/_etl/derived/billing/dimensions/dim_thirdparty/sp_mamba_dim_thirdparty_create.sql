@@ -1,5 +1,6 @@
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_third_party
+
+CREATE TABLE mamba_dim_third_party
 (
     id             INT          NOT NULL AUTO_INCREMENT,
     third_party_id INT          NOT NULL,

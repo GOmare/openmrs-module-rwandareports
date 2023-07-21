@@ -1,5 +1,6 @@
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_facility_service_price
+
+CREATE TABLE mamba_dim_facility_service_price
 (
     id                        INT            NOT NULL AUTO_INCREMENT,
     facility_service_price_id INT            NOT NULL,

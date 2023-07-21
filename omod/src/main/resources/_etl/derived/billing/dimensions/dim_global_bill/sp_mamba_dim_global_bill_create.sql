@@ -1,5 +1,6 @@
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_global_bill
+
+CREATE TABLE mamba_dim_global_bill
 (
     id              INT          NOT NULL AUTO_INCREMENT,
     global_bill_id  INT          NOT NULL,
@@ -8,7 +9,7 @@ CREATE TABLE IF NOT EXISTS mamba_dim_global_bill
     bill_identifier varchar(250) not null,
     global_amount   decimal      not null,
     closing_date    datetime     null,
-    closed          TINYINT(1)     not null,
+    closed          TINYINT(1)   not null,
     closed_by_id    int          null,
     closed_by_name  varchar(255) null,
     closed_reason   varchar(150) null,
@@ -17,7 +18,7 @@ CREATE TABLE IF NOT EXISTS mamba_dim_global_bill
     created_date    datetime     not null,
 
     PRIMARY KEY (id)
-    )
+)
     CHARSET = UTF8MB4;
 
 CREATE INDEX mamba_dim_global_bill_global_bill_id_index

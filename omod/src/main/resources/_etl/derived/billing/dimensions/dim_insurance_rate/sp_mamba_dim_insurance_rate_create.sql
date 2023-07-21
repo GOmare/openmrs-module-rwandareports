@@ -1,5 +1,6 @@
 -- $BEGIN
-CREATE TABLE IF NOT EXISTS mamba_dim_insurance_rate
+
+CREATE TABLE mamba_dim_insurance_rate
 (
     id                INT            NOT NULL AUTO_INCREMENT,
     insurance_rate_id INT            NOT NULL,
@@ -13,7 +14,7 @@ CREATE TABLE IF NOT EXISTS mamba_dim_insurance_rate
     retire_date       date           null,
 
     PRIMARY KEY (id)
-    )
+)
     CHARSET = UTF8MB4;
 
 CREATE INDEX mamba_dim_insurance_rate_insurance_rate_id_index

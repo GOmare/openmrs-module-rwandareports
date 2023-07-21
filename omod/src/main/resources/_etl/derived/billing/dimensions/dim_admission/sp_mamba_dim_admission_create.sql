@@ -1,4 +1,5 @@
 -- $BEGIN
+
 CREATE TABLE IF NOT EXISTS mamba_dim_admission
 (
     id                  INT          NOT NULL AUTO_INCREMENT,
