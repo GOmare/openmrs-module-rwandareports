@@ -1224,7 +1224,7 @@ CREATE TABLE mamba_dim_concept_name
     concept_name_id   INT          NOT NULL,
     concept_id        INT,
     name              VARCHAR(255) NOT NULL,
-    locale            VARCHAR(50)  not null,
+    locale            VARCHAR(50)  NOT NULL,
     locale_preferred  TINYINT,
     concept_name_type VARCHAR(255),
 
@@ -1279,7 +1279,8 @@ SELECT cn.concept_name_id,
        cn.concept_name_type
 FROM concept_name cn
  WHERE cn.locale = 'en'
-  AND cn.locale_preferred = 1;
+  AND cn.locale_preferred = 1
+    AND cn.voided = 0;
 
 -- $END
 END //
@@ -1588,7 +1589,136 @@ BEGIN
   -- $BEGIN
 
   SET @report_data = '{"flat_report_metadata":[
-  ]}';
+  {
+  "report_name": "NCD Diabetes Report",
+  "flat_table_name": "mamba_flat_encounter_diabetes",
+  "encounter_type_uuid": "6bbe8864-a005-4183-bd14-9497883d9655",
+  "concepts_locale": "en",
+  "table_columns": {
+    "xray_chest": "3ccc6186-26fe-102b-80cb-0017a47871b2",
+    "hemoglobin": "3ccc7158-26fe-102b-80cb-0017a47871b2",
+    "total_protein": "3cd3bd5a-26fe-102b-80cb-0017a47871b2",
+    "platelets": "3cd3d038-26fe-102b-80cb-0017a47871b2",
+    "serum_creatinine": "3cd4374e-26fe-102b-80cb-0017a47871b2",
+    "urinary_albumin": "3cd49d88-26fe-102b-80cb-0017a47871b2",
+    "blood_urea_nitrogen": "3cd4aa12-26fe-102b-80cb-0017a47871b2",
+    "serum_glucose": "3cd4e194-26fe-102b-80cb-0017a47871b2",
+    "allergy_to_drug": "3cd66cda-26fe-102b-80cb-0017a47871b2",
+    "total_cholesterol": "3cd68c7e-26fe-102b-80cb-0017a47871b2",
+    "highdensity_lipoprotein_cholesterol": "3cd68e18-26fe-102b-80cb-0017a47871b2",
+    "lowdensity_lipoprotein_cholesterol": "3cd68fa8-26fe-102b-80cb-0017a47871b2",
+    "triglycerides": "3cd69138-26fe-102b-80cb-0017a47871b2",
+    "hematocrit": "3cd69a98-26fe-102b-80cb-0017a47871b2",
+    "lymphocytes": "3cd6a402-26fe-102b-80cb-0017a47871b2",
+    "neutrophils": "3cd6a592-26fe-102b-80cb-0017a47871b2",
+    "monocytes": "3cd6a722-26fe-102b-80cb-0017a47871b2",
+    "eosinophils": "3cd6a8b2-26fe-102b-80cb-0017a47871b2",
+    "basophils": "3cd6aa38-26fe-102b-80cb-0017a47871b2",
+    "general_exam_findings": "0adeea3a-15f5-102d-96e4-000c29c2a5d7",
+    "heent_exam_findings": "3cd75b86-26fe-102b-80cb-0017a47871b2",
+    "cardiac_exam_findings": "3cd75e9c-26fe-102b-80cb-0017a47871b2",
+    "abdominal_exam_findings": "3cd76054-26fe-102b-80cb-0017a47871b2",
+    "urogenital_exam_findings": "3cd761ee-26fe-102b-80cb-0017a47871b2",
+    "extremity_exam_findings": "3cd7637e-26fe-102b-80cb-0017a47871b2",
+    "serum_sodium": "3cd76b58-26fe-102b-80cb-0017a47871b2",
+    "serum_potassium": "3cd76ce8-26fe-102b-80cb-0017a47871b2",
+    "medication_history": "3cd9478e-26fe-102b-80cb-0017a47871b2",
+    "name_of_health_care_provider": "3cda02e6-26fe-102b-80cb-0017a47871b2",
+    "telephone_number": "3cda3d7e-26fe-102b-80cb-0017a47871b2",
+    "current_oi_or_comorbidity": "0ae23a5a-15f5-102d-96e4-000c29c2a5d7",
+    "comments_at_conclusion_of_examination": "3cdc5938-26fe-102b-80cb-0017a47871b2",
+    "creatinine_clearance": "3cdc609a-26fe-102b-80cb-0017a47871b2",
+    "body_mass_index_measured": "3ce14da8-26fe-102b-80cb-0017a47871b2",
+    "result_of_hiv_test": "3ce17cec-26fe-102b-80cb-0017a47871b2",
+    "other_lab_test_name": "3ce1c90e-26fe-102b-80cb-0017a47871b2",
+    "other_lab_test_result": "3ce1ca8a-26fe-102b-80cb-0017a47871b2",
+    "current_complaints_or_symptoms": "3ce2b170-26fe-102b-80cb-0017a47871b2",
+    "cardiac_medication": "4dde0454-edd2-4e61-b86b-4283b482f453",
+    "other_general_exam_findings": "8d8597b4-0b54-4bc1-a35c-fa06d80e7a2b",
+    "lung_exam_findings": "0aee5fba-15f5-102d-96e4-000c29c2a5d7",
+    "patients_fluid_management": "5c5755df-3d1b-4ae2-a465-31dc05f49ddd",
+    "drug_frequency_coded": "71ffb8ee-382e-4ad0-9b42-0b665f81aaf9",
+    "echocardiogram_comment": "5c052224-aeaf-4a17-8dca-8255eef79644",
+    "cardiac_medication_construct": "cd0f1b4b-8045-4482-837d-448d51815d26",
+    "morning_dose_in_milligrams": "f032b306-4d4b-4b02-8335-3cce084f30a6",
+    "noon_dose_in_milligrams": "41abbe03-04da-4b5d-8223-0a249245dcf1",
+    "night_dose_in_milligrams": "305c266e-2035-4ef2-ab44-b4e70756998d",
+    "type_of_referring_clinic_or_hospital": "c3e1d8d4-3040-49dd-ad66-c0928d912941",
+    "allergy_comment": "38b0118c-1cf4-40a9-a508-15c48d9586ac",
+    "chronic_care_diagnosis": "bb7e04d8-3355-4fe8-9c87-98642eafab93",
+    "hypoglycemia": "641f4fe3-cac2-46c4-aa94-c8b6d05e9407",
+    "ddb_echocardiograph_result": "75b3b477-a8ab-4eba-9912-c8bca53b0bbf",
+    "heart_failure_diagnosis": "e6bb1491-43b5-46b8-ba55-bd1ad188123c",
+    "neurological_exam_findings": "edd2cae1-99e7-4219-b5f9-fa512a69fed2",
+    "systolic_blood_pressure": "3ce934fa-26fe-102b-80cb-0017a47871b2",
+    "diastolic_blood_pressure": "3ce93694-26fe-102b-80cb-0017a47871b2",
+    "pulse": "3ce93824-26fe-102b-80cb-0017a47871b2",
+    "temperature_c": "3ce939d2-26fe-102b-80cb-0017a47871b2",
+    "weight_kg": "3ce93b62-26fe-102b-80cb-0017a47871b2",
+    "height_cm": "3ce93cf2-26fe-102b-80cb-0017a47871b2",
+    "blood_oxygen_saturation": "3ce9401c-26fe-102b-80cb-0017a47871b2",
+    "return_visit_date": "3ce94df0-26fe-102b-80cb-0017a47871b2",
+    "respiratory_rate": "3ceb11f8-26fe-102b-80cb-0017a47871b2",
+    "previous_medical_history": "bc3862d8-6825-4878-8801-f1e7b0790071",
+    "time_units": "f1904502-319d-4681-9030-e642111e7ce2",
+    "alat_result": "fd826b26-0343-41d6-b51c-81f3b75e388c",
+    "asat_result": "68ba31fa-e2ae-45c1-8d6d-f116c27f190e",
+    "location_of_lymphadenopathy": "9da47553-eaf7-4c28-90b3-414f8eebffd9",
+    "type_of_diabetes_diagnosis": "d66e5df3-bc91-41ea-9592-0f199fbc589e",
+    "diabetes_medications": "fa9b8b64-7081-41ec-9018-a8ea51464d70",
+    "clinical_diagnosis_for_asthma": "e8f25c6e-9491-4ca3-9d31-7df9cb3d9ed9",
+    "sensation_in_left_foot": "19afbd01-c1d0-4041-8cc8-e87a7922c1df",
+    "sensation_in_right_foot": "62e72ad7-869e-4eae-909c-36ec4f2b7555",
+    "asthma_medications": "0c0ae909-30bf-4b06-85d0-49e08056b1ea",
+    "gamma_gt": "a01f58fa-0e27-474a-8975-f282f888a31d",
+    "diagnosis_or_problem_noncoded": "970d41ce-5098-47a4-8872-4dd843c0df3f",
+    "facility": "3c9331e3-d02c-4b7d-840e-59e2d8ab7dff",
+    "other_diabetes_drug": "219d650a-3305-4f56-9613-147d213bc9c9",
+    "other_cardiovascular_chronic_kidney_meds": "0e039736-b016-484d-8931-5ea5c0391995",
+    "diagnosis_or_problem_construct": "e9efefc3-065a-4fc9-991f-63255415b4f6",
+    "hba1c": "159644AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "clinican_notes": "6602a73b-b8d3-40bc-bae8-f00ff3b9cceb",
+    "ubudehe_category": "b9016409-8ca6-4123-97a5-146dc93571e8",
+    "family_caregivername": "14a171cd-d8e6-4326-9f29-a5ee3f8055dd",
+    "family_caregiver_phone_number": "a20ccea2-8671-4bfa-9852-946266fe9ac7",
+    "patients_contact_phone_owner": "d44faa5c-32e0-4715-b4af-f89664cde097",
+    "other_text": "c548a633-9931-496d-9ade-4b7c971e6600",
+    "duration": "222d802c-4306-4c4c-866f-c4ca5d46d4a7",
+    "duration_with_units_set": "2b6ac755-70a2-47a6-bba2-db1bc63457e3",
+    "surgicalhistory": "6f035d26-aab4-4a54-ae3b-6c1db01cd120",
+    "obstestrical": "9ea8c0c8-9a4f-4c1d-9962-c31c7abc62dc",
+    "patient_medical_history": "9090e8f8-54cd-4ed0-b994-1130afb384bd",
+    "patient_chronic_disease_history": "e20ab8c4-bd53-4f9f-b2e1-04fe7cb667ea",
+    "other_disease": "f9e8e946-d177-4ca9-8004-779ae6abe9df",
+    "familymember_suffered_chronic_disease": "f6268042-d8b6-4814-8abe-c4a8023eb058",
+    "familymember_chronic_diseases": "bb523be9-a82a-4d3b-82b9-30f00726848c",
+    "chest_thorax_exam_findings": "d261d79b-71a1-42b5-9393-18dac01a5955",
+    "other_medical_findings": "b192c81d-5e89-40ed-a71d-ff03c1e380c0",
+    "hypertension_stages": "5d31abca-d671-4e93-aaa0-5b383ff7d8ad",
+    "treatment_appoach": "0bbba919-97d0-496e-8b7d-787090773e3c",
+    "morning_dose_in_units": "9325d70e-705a-45fd-bed2-31e815d6b2db",
+    "noon_dose_in_units": "a260b953-ac39-4745-bbc9-9c6fb45f3821",
+    "evening_dose_in_units": "41a50d09-a434-41ee-ab3a-220367316056",
+    "bedtime_dose_in_units": "f1ca287b-a329-4764-8ccb-a27927cef16c",
+    "diabetes_treatment_construct": "5511ae49-91c1-43ab-aa76-49e38ba02146",
+    "other_asthma_drug": "16fae208-4dea-4e32-9233-238be6eac56c",
+    "other_hf_htn_ckd_drugs": "ec641732-c28f-4fd6-9d9e-019fadcf799b",
+    "compliance": "7c9f7be9-3b1b-44b6-a00f-8738a99a7431",
+    "ophthalmology_service": "b9d90af3-e9e8-4316-b2c7-673938076252",
+    "bed_time_dose_in_milligrams": "ef7581c0-18f7-40a6-acb9-1e31e1c325f8",
+    "food_insecurity": "55475803-90e6-4fda-b2aa-6874e563da4b",
+    "part_of_the_day": "d7dff675-50d2-4a2b-88c3-dab4150dfc7b",
+    "exit_ncd_program": "bedc579c-cfdc-4a94-9b13-112ce21145f0",
+    "physical_pain_score": "8f0f2330-d296-4b7f-bc7e-561328227721",
+    "spiritual_pain_score": "ef0c2cc9-0eb0-41f4-9a0d-34f1b3b17593",
+    "psychological_pain_score": "6e429c48-cdfa-4dfd-9267-90131c2b1e12",
+    "other_pain_drugs": "b20f4e61-94d3-4b31-955d-36e4df61a710",
+    "drug_prescription_construct": "f7505d6c-fa17-4279-822d-8914b2e9d352",
+    "pain_score_comments": "7c4fb4d3-5e09-49ed-bd44-190ca9a75a55",
+    "glucose_test": "b8de5533-e263-49fe-bb3f-62298365e268",
+    "telephone_group": "5ab398c2-5185-4f66-9f18-6772e26e82ac"
+  }
+}]}';
 
   CALL sp_mamba_extract_report_metadata(@report_data, 'mamba_dim_concept_metadata');
 
@@ -1621,7 +1751,7 @@ SET md.concept_datatype = c.datatype,
     md.concept_name     = cn.name
 WHERE md.id > 0
   AND cn.locale = md.concepts_locale
-  AND IF(cn.locale_preferred = 1, cn.locale_preferred = 1, cn.concept_name_type = 'FULLY_SPECIFIED');
+  AND cn.locale_preferred = 1 and  cn.locale = 'en';
 -- Use locale preferred or Fully specified name
 
 -- Update to True if this field is an obs answer to an obs Question
@@ -1716,6 +1846,7 @@ BEGIN
 -- $BEGIN
 
 INSERT INTO mamba_dim_person
+<<<<<<< HEAD
 (person_id,
  birthdate,
  birthdate_estimated,
@@ -1749,7 +1880,58 @@ FROM person psn
          INNER JOIN person_name pn
                     on psn.person_id = pn.person_id
 where pn.preferred=1;
+=======
+    (
+        person_id,
+        birthdate,
+        birthdate_estimated,
+        age,
+        dead,
+        death_date,
+        deathdate_estimated,
+        gender,
+        date_created,
+        uuid,
+        voided
+    )
 
+    SELECT psn.person_id,
+           psn.birthdate,
+           psn.birthdate_estimated,
+           fn_mamba_age_calculator(birthdate,death_date) AS age,
+           psn.dead,
+           psn.death_date,
+           psn.deathdate_estimated,
+           psn.gender,
+           psn.date_created,
+           psn.uuid,
+           psn.voided
+    FROM person psn;
+>>>>>>> bf27a34 (etl diabetes)
+
+-- $END
+END //
+
+DELIMITER ;
+
+        
+-- ---------------------------------------------------------------------------------------------
+-- ----------------------  sp_mamba_dim_person_update  ----------------------------
+-- ---------------------------------------------------------------------------------------------
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS sp_mamba_dim_person_update;
+
+CREATE PROCEDURE sp_mamba_dim_person_update()
+BEGIN
+-- $BEGIN
+UPDATE mamba_dim_person dp
+    INNER JOIN person psn  on psn.person_id = dp.person_id
+    INNER JOIN  person_name pn on psn.person_id = pn.person_id
+    SET   person_name_short = CONCAT_WS(' ',prefix,given_name,middle_name,family_name),
+        person_name_long = CONCAT_WS(' ',prefix,given_name, middle_name,family_name_prefix, family_name,family_name2,family_name_suffix, degree)
+;
 -- $END
 END //
 
@@ -1770,7 +1952,7 @@ BEGIN
 
 CALL sp_mamba_dim_person_create();
 CALL sp_mamba_dim_person_insert();
-
+CALL sp_mamba_dim_person_update();
 -- $END
 END //
 
